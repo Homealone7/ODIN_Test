@@ -90,8 +90,9 @@ module spi_slave #(
         else                       spi_addr <= spi_addr;
 	
     always @(posedge SCK)
-        spi_shift_reg_in <= {spi_shift_reg_in[18:0], MOSI};
-        
+        spi_shift_reg_in <= {spi_shift_reg_in[18:0], MOSI}; // a<19> = R, a<18> = W , a<17:16> 01 = neruon memory 10 = syn memory
+                                                            // a<15:0> selects byte addr and word adrr in first 20 cycles
+                                                            // a<15:0> in the next 20 cycles contains the data
 	
 	// SPI shift register
 	always @(negedge SCK, posedge RST_async)

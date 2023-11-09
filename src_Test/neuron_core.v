@@ -94,8 +94,8 @@ module neuron_core #(
 
     // Updated or configured neuron state to be written to the neuron memory
 
-    assign neuron_data_int = {NEUR_STATE[127: 86], LIF_neuron_next_NEUR_STATE,NEUR_STATE[69:0]}
-
+    assign neuron_data_int = NEUR_STATE[0] ? {NEUR_STATE[127: 86], LIF_neuron_next_NEUR_STATE,NEUR_STATE[69:0]}
+                                           : {NEUR_STATE[127:125], IZH_neuron_next_NEUR_STATE,NEUR_STATE[69:0]};
     generate
         for (i=0; i<(N>>4); i=i+1) begin
         
@@ -169,92 +169,6 @@ module neuron_core #(
     
     // Neuron update logic for phenomenological Izhikevich model
 
-    izh_neuron #(
-        .ACC_DEPTH(11)
-    ) izh_neuron_0 ( 
-        .param_leak_str(         ~NEUR_STATE[0] ? NEUR_STATE[  7:  1] : 7'b0),
-        .param_leak_en(          ~NEUR_STATE[0] ? NEUR_STATE[      8] : 1'b0),
-        .param_fi_sel(           ~NEUR_STATE[0] ? NEUR_STATE[ 11:  9] : 3'b0),
-        .param_spk_ref(          ~NEUR_STATE[0] ? NEUR_STATE[ 14: 12] : 3'b0),
-        .param_isi_ref(          ~NEUR_STATE[0] ? NEUR_STATE[ 17: 15] : 3'b0),
-        .param_reson_sharp_en(   ~NEUR_STATE[0] ? NEUR_STATE[     18] : 1'b0),
-        .param_thr(              ~NEUR_STATE[0] ? NEUR_STATE[ 21: 19] : 3'b0),
-        .param_rfr(              ~NEUR_STATE[0] ? NEUR_STATE[ 24: 22] : 3'b0),
-        .param_dapdel(           ~NEUR_STATE[0] ? NEUR_STATE[ 27: 25] : 3'b0),
-        .param_spklat_en(        ~NEUR_STATE[0] ? NEUR_STATE[     28] : 1'b0),
-        .param_dap_en(           ~NEUR_STATE[0] ? NEUR_STATE[     29] : 1'b0),
-        .param_stim_thr(         ~NEUR_STATE[0] ? NEUR_STATE[ 32: 30] : 3'b0),
-        .param_phasic_en(        ~NEUR_STATE[0] ? NEUR_STATE[     33] : 1'b0),
-        .param_mixed_en(         ~NEUR_STATE[0] ? NEUR_STATE[     34] : 1'b0),
-        .param_class2_en(        ~NEUR_STATE[0] ? NEUR_STATE[     35] : 1'b0),
-        .param_neg_en(           ~NEUR_STATE[0] ? NEUR_STATE[     36] : 1'b0),
-        .param_rebound_en(       ~NEUR_STATE[0] ? NEUR_STATE[     37] : 1'b0),
-        .param_inhin_en(         ~NEUR_STATE[0] ? NEUR_STATE[     38] : 1'b0),
-        .param_bist_en(          ~NEUR_STATE[0] ? NEUR_STATE[     39] : 1'b0),
-        .param_reson_en(         ~NEUR_STATE[0] ? NEUR_STATE[     40] : 1'b0),
-        .param_thrvar_en(        ~NEUR_STATE[0] ? NEUR_STATE[     41] : 1'b0),
-        .param_thr_sel_of(       ~NEUR_STATE[0] ? NEUR_STATE[     42] : 1'b0),
-        .param_thrleak(          ~NEUR_STATE[0] ? NEUR_STATE[ 46: 43] : 4'b0),
-        .param_acc_en(           ~NEUR_STATE[0] ? NEUR_STATE[     47] : 1'b0),
-        .param_ca_en(            ~NEUR_STATE[0] ? NEUR_STATE[     48] : 1'b0),
-        .param_thetamem(         ~NEUR_STATE[0] ? NEUR_STATE[ 51: 49] : 3'b0),
-        .param_ca_theta1(        ~NEUR_STATE[0] ? NEUR_STATE[ 54: 52] : 3'b0),
-        .param_ca_theta2(        ~NEUR_STATE[0] ? NEUR_STATE[ 57: 55] : 3'b0),
-        .param_ca_theta3(        ~NEUR_STATE[0] ? NEUR_STATE[ 60: 58] : 3'b0),
-        .param_caleak(           ~NEUR_STATE[0] ? NEUR_STATE[ 65: 61] : 5'b0),
-        .param_burst_incr(       ~NEUR_STATE[0] ? NEUR_STATE[     66] : 1'b0),
-        .param_reson_sharp_amt(  ~NEUR_STATE[0] ? NEUR_STATE[ 69: 67] : 3'b0),
-        
-        .state_inacc(            ~NEUR_STATE[0] ? NEUR_STATE[ 80: 70] :11'b0),
-        .state_inacc_next(        IZH_neuron_next_NEUR_STATE[ 10:  0]       ),
-        .state_refrac(           ~NEUR_STATE[0] ? NEUR_STATE[     81] : 1'b0),
-        .state_refrac_next(       IZH_neuron_next_NEUR_STATE[     11]       ),
-        .state_core(             ~NEUR_STATE[0] ? NEUR_STATE[ 85: 82] : 4'b0),
-        .state_core_next(         IZH_neuron_next_NEUR_STATE[ 15: 12]       ),
-        .state_dapdel_cnt(       ~NEUR_STATE[0] ? NEUR_STATE[ 88: 86] : 3'b0),
-        .state_dapdel_cnt_next(   IZH_neuron_next_NEUR_STATE[ 18: 16]       ),
-        .state_stim_str(         ~NEUR_STATE[0] ? NEUR_STATE[ 92: 89] : 4'b0),
-        .state_stim_str_next(     IZH_neuron_next_NEUR_STATE[ 22: 19]       ),
-        .state_stim_str_tmp(     ~NEUR_STATE[0] ? NEUR_STATE[ 96: 93] : 4'b0),
-        .state_stim_str_tmp_next( IZH_neuron_next_NEUR_STATE[ 26: 23]       ),
-        .state_phasic_lock(      ~NEUR_STATE[0] ? NEUR_STATE[     97] : 1'b0),
-        .state_phasic_lock_next(  IZH_neuron_next_NEUR_STATE[     27]       ),
-        .state_mixed_lock(       ~NEUR_STATE[0] ? NEUR_STATE[     98] : 1'b0),
-        .state_mixed_lock_next(   IZH_neuron_next_NEUR_STATE[     28]       ),
-        .state_spkout_done(      ~NEUR_STATE[0] ? NEUR_STATE[     99] : 1'b0),
-        .state_spkout_done_next(  IZH_neuron_next_NEUR_STATE[     29]       ),
-        .state_stim0_prev(       ~NEUR_STATE[0] ? NEUR_STATE[101:100] : 2'b0),
-        .state_stim0_prev_next(   IZH_neuron_next_NEUR_STATE[ 31: 30]       ),
-        .state_inhexc_prev(      ~NEUR_STATE[0] ? NEUR_STATE[103:102] : 2'b0),
-        .state_inhexc_prev_next(  IZH_neuron_next_NEUR_STATE[ 33: 32]       ),
-        .state_bist_lock(        ~NEUR_STATE[0] ? NEUR_STATE[    104] : 1'b0),
-        .state_bist_lock_next(    IZH_neuron_next_NEUR_STATE[     34]       ),
-        .state_inhin_lock(       ~NEUR_STATE[0] ? NEUR_STATE[    105] : 1'b0),
-        .state_inhin_lock_next(   IZH_neuron_next_NEUR_STATE[     35]       ),
-        .state_reson_sign(       ~NEUR_STATE[0] ? NEUR_STATE[107:106] : 2'b0),
-        .state_reson_sign_next(   IZH_neuron_next_NEUR_STATE[ 37: 36]       ),
-        .state_thrmod(           ~NEUR_STATE[0] ? NEUR_STATE[111:108] : 4'b0),
-        .state_thrmod_next(       IZH_neuron_next_NEUR_STATE[ 41: 38]       ),
-        .state_thrleak_cnt(      ~NEUR_STATE[0] ? NEUR_STATE[115:112] : 4'b0),
-        .state_thrleak_cnt_next(  IZH_neuron_next_NEUR_STATE[ 45: 42]       ),
-        .state_calcium(          ~NEUR_STATE[0] ? NEUR_STATE[118:116] : 3'b0),
-        .state_calcium_next(      IZH_neuron_next_NEUR_STATE[ 48: 46]       ),
-        .state_caleak_cnt(       ~NEUR_STATE[0] ? NEUR_STATE[123:119] : 5'b0),
-        .state_caleak_cnt_next(   IZH_neuron_next_NEUR_STATE[ 53: 49]       ),
-        .state_burst_lock(       ~NEUR_STATE[0] ? NEUR_STATE[    124] : 1'b0),
-        .state_burst_lock_next(   IZH_neuron_next_NEUR_STATE[     54]       ),
-        
-        .syn_weight(syn_weight),
-        .syn_sign(syn_sign),
-        .syn_event(syn_event),
-        .time_ref(time_ref),
-        .burst_end(CTRL_NEUR_BURST_END),
-        
-        .v_up_next(IZH_neuron_v_up_next),
-        .v_down_next(IZH_neuron_v_down_next),
-        .event_out(IZH_neuron_event_out)
-    );
-    
 
     // Neuron memory wrapper
 
@@ -301,7 +215,7 @@ module SRAM_256x128_wrapper (
      *  Simple behavioral code for simulation, to be replaced by a 256-word 128-bit SRAM macro 
      *  or Block RAM (BRAM) memory with the same format for FPGA implementations.
      */      
-        reg [127:0] SRAM[255:0];
+        reg [127:0] SRAM[2:0];
         reg [127:0] Qr;
         always @(posedge CK) begin
             Qr <= CS ? SRAM[A] : Qr;

@@ -1,0 +1,83 @@
+C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_neuron_state.v {1 {vlog -work work -stats=none C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_neuron_state.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module izh_neuron_state
+
+Top level modules:
+	izh_neuron_state
+
+} {} {}} C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/LIF_neuron_blocks/lif_neuron_state.v {1 {vlog -work work -stats=none C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/LIF_neuron_blocks/lif_neuron_state.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module lif_neuron_state
+
+Top level modules:
+	lif_neuron_state
+
+} {} {}} C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/lif_neuron.v {1 {vlog -work work -stats=none C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/lif_neuron.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module lif_neuron
+
+Top level modules:
+	lif_neuron
+
+} {} {}} C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_effective_threshold.v {1 {vlog -work work -stats=none C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_effective_threshold.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module izh_effective_threshold
+
+Top level modules:
+	izh_effective_threshold
+
+} {} {}} C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_calcium.v {1 {vlog -work work -stats=none C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_calcium.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module izh_calcium
+
+Top level modules:
+	izh_calcium
+
+} {} {}} C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/LIF_neuron_blocks/lif_calcium.v {1 {vlog -work work -stats=none C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/LIF_neuron_blocks/lif_calcium.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module lif_calcium
+
+Top level modules:
+	lif_calcium
+
+} {} {}} C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_input_accumulator.v {1 {vlog -work work -stats=none C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_input_accumulator.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module izh_input_accumulator
+
+Top level modules:
+	izh_input_accumulator
+
+} {} {}} C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_stimulation_strength.v {1 {vlog -work work -stats=none C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_stimulation_strength.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module izh_stimulation_strength
+
+Top level modules:
+	izh_stimulation_strength
+
+} {} {}} C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/neuron_core.v {1 {vlog -work work -stats=none C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/neuron_core.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module neuron_core
+-- Compiling module SRAM_256x128_wrapper
+
+Top level modules:
+	neuron_core
+
+} {} {}} C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v {0 {vlog -work work -stats=none C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module tb_lif_neuron_state
+** Error: C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v(18): (vlog-2730) Undefined variable: 'NEUR_STATE'.
+** Error: C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v(29): (vlog-2730) Undefined variable: 'LIF_neuron_next_NEUR_STATE'.
+** Error: (vlog-13069) C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v(62): near "initial": syntax error, unexpected initial, expecting ';' or ','.
+** Error: C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v(65): (vlog-13161) unexpected '$fatal'
+** Error: C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v(68): (vlog-13161) unexpected '$fwrite'
+** Error: (vlog-13069) C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v(71): near "=": syntax error, unexpected '='.
+** Error: C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v(71): (vlog-13205) Syntax error found in the scope following 'param_leak_str'. Is there a missing '::'?
+
+} {4.0 11.0} {}} C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/izh_neuron.v {1 {vlog -work work -stats=none C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/izh_neuron.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module izh_neuron
+
+Top level modules:
+	izh_neuron
+
+} {} {}}

@@ -1,0 +1,111 @@
+`timescale 1ps/1ps
+module tb_lif_neuron_state;
+
+    reg [6:0] param_leak_str; // corresponds to leak_str in the golden model
+    reg       param_leak_en;  // corresponds to leak_en in the golden model
+    reg [7:0] param_thr;      // corresponds to thr in the golden model
+    reg [7:0] state_core;
+    reg       event_leak;
+    reg       event_inh;
+    reg       event_exc;
+    reg [2:0] syn_weight;     // a 3-bit synaptic weight for simplicity
+    wire [7:0] state_core_next;
+    wire [6:0] event_out;
+
+    integer file_descriptor;
+
+    lif_neuron lif_neuron_0 ( 
+        .param_leak_str(         NEUR_STATE[0] ? NEUR_STATE[  7:  1] : 7'b0),
+        .param_leak_en(          NEUR_STATE[0] ? NEUR_STATE[      8] : 1'b0),
+        .param_thr(              NEUR_STATE[0] ? NEUR_STATE[ 16:  9] : 8'b0),
+        .param_ca_en(            NEUR_STATE[0] ? NEUR_STATE[     17] : 1'b0),
+        .param_thetamem(         NEUR_STATE[0] ? NEUR_STATE[ 25: 18] : 8'b0),
+        .param_ca_theta1(        NEUR_STATE[0] ? NEUR_STATE[ 28: 26] : 3'b0),
+        .param_ca_theta2(        NEUR_STATE[0] ? NEUR_STATE[ 31: 29] : 3'b0),
+        .param_ca_theta3(        NEUR_STATE[0] ? NEUR_STATE[ 34: 32] : 3'b0),
+        .param_caleak(           NEUR_STATE[0] ? NEUR_STATE[ 39: 35] : 5'b0),
+        
+        .state_core(             NEUR_STATE[0] ? NEUR_STATE[ 77: 70] : 8'b0),
+        .state_core_next(        LIF_neuron_next_NEUR_STATE[  7:  0]       ),
+        .state_calcium(          NEUR_STATE[0] ? NEUR_STATE[ 80: 78] : 3'b0),
+        .state_calcium_next(     LIF_neuron_next_NEUR_STATE[ 10:  8]       ),
+        .state_caleak_cnt(       NEUR_STATE[0] ? NEUR_STATE[ 85: 81] : 5'b0),
+        .state_caleak_cnt_next(  LIF_neuron_next_NEUR_STATE[ 15: 11]       ),
+        
+        .syn_weight(syn_weight),
+        .syn_sign(syn_sign),
+        .syn_event(syn_event),
+        .time_ref(time_ref),
+        
+        .v_up_next(LIF_neuron_v_up_next),
+        .v_down_next(LIF_neuron_v_down_next),
+        .event_out(LIF_neuron_event_out) 
+    );
+
+    lif_neuron_state uut (
+        .param_leak_str(param_leak_str),
+        .param_leak_en(param_leak_en),
+        .param_thr(param_thr),
+        .state_core(state_core),
+        .event_leak(event_leak),
+        .event_inh(event_inh),
+        .event_exc(event_exc),
+        .syn_weight(syn_weight),
+        .state_core_next(state_core_next),
+        .event_out(event_out)
+    );
+
+    lif_calcium ca(
+        .param_ca_en(1'b0)
+    )
+
+    initial begin
+        // Open the file for writing
+        file_descriptor = $fopen("neuron_output.csv", "w");
+        if (file_descriptor == 0) $fatal("Error opening file for writing.");
+
+        // Write the CSV header
+        $fwrite(file_descriptor, "Time,State Core\n");
+
+        // Initialize parameters to match the golden model
+        param_leak_str = 7'd5;    // leakage strength set to 5
+        param_leak_en  = 1'b1;    // Enable leakage
+        param_thr      = 8'd100;  // Firing threshold set to 100
+        state_core     = 8'd0;    // Initial membrane potential
+
+        // Start the test
+        event_leak = 0;
+        event_inh = 0;
+        event_exc = 0;
+        syn_weight = 3'd4;  // Set an arbitrary synaptic weight for testing
+        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
+        #10
+        event_exc = 1;  // Trigger excitatory event
+        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
+        #10
+        event_exc = 0;
+        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
+
+        #10
+        event_exc = 1;  // Trigger inhibitory event
+        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
+        #10
+        event_inh = 1;
+        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
+
+        #10
+        event_leak = 1;  // Trigger leakage event
+        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
+        #10
+        event_leak = 0;
+        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
+
+        #10
+        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
+
+        #10
+        $fclose(file_descriptor);  // Close the file
+        $stop;  // End the simulation
+    end
+
+endmodule
