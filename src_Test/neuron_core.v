@@ -95,12 +95,12 @@ module neuron_core #(
     // Updated or configured neuron state to be written to the neuron memory
 
     assign neuron_data_int = NEUR_STATE[0] ? {NEUR_STATE[127: 86], LIF_neuron_next_NEUR_STATE,NEUR_STATE[69:0]}
-                                           : {NEUR_STATE[127:125], IZH_neuron_next_NEUR_STATE,NEUR_STATE[69:0]};
+                                           : 128'b0;
     generate
         for (i=0; i<(N>>4); i=i+1) begin
         
             assign neuron_data[M*i+M-1:M*i] = SPI_GATE_ACTIVITY_sync
-                                            ? ((i == CTRL_SPI_ADDR[2*M-1:M])
+                                            ? ((i == CTRL_SPI_ADDR[2*M-5:M])
                                                      ? ((CTRL_PROG_DATA[M-1:0] & ~CTRL_PROG_DATA[2*M-1:M]) | (NEUR_STATE[M*i+M-1:M*i] & CTRL_PROG_DATA[2*M-1:M]))
                                                      : NEUR_STATE[M*i+M-1:M*i])
                                             : neuron_data_int[M*i+M-1:M*i];
@@ -115,8 +115,8 @@ module neuron_core #(
         for (i=0; i<N; i=i+1) begin
             always @(posedge CLK)
                 if (CTRL_NEURMEM_CS && CTRL_NEURMEM_WE && (i == CTRL_NEURMEM_ADDR)) begin
-                    NEUR_V_UP[i]   <= NEUR_STATE[0] ? LIF_neuron_v_up_next   : IZH_neuron_v_up_next;
-                    NEUR_V_DOWN[i] <= NEUR_STATE[0] ? LIF_neuron_v_down_next : IZH_neuron_v_down_next;
+                    NEUR_V_UP[i]   <= NEUR_STATE[0] ? LIF_neuron_v_up_next   : 1'b0;
+                    NEUR_V_DOWN[i] <= NEUR_STATE[0] ? LIF_neuron_v_down_next : 1'b0;
                 end else begin
                     NEUR_V_UP[i]   <= NEUR_V_UP[i];
                     NEUR_V_DOWN[i] <= NEUR_V_DOWN[i];
@@ -129,11 +129,10 @@ module neuron_core #(
 
     assign NEUR_STATE_MONITOR = NEUR_STATE[0]
                               ? {LIF_neuron_v_up_next, LIF_neuron_v_down_next, LIF_neuron_next_NEUR_STATE[10:8], 2'b0, LIF_neuron_next_NEUR_STATE[7:0]}
-                              : {IZH_neuron_v_up_next, IZH_neuron_v_down_next, IZH_neuron_next_NEUR_STATE[48:46], IZH_neuron_next_NEUR_STATE[37:36], {4'b0,IZH_neuron_next_NEUR_STATE[15:12]}};
-    
+                              : 128'b0;
     // Neuron output spike events
 
-    assign NEUR_EVENT_OUT     = NEUR_STATE[127] ? 7'b0 : ((CTRL_NEURMEM_CS && CTRL_NEURMEM_WE) ? (NEUR_STATE[0] ? LIF_neuron_event_out : IZH_neuron_event_out) : 7'b0);
+    assign NEUR_EVENT_OUT     = NEUR_STATE[127] ? 7'b0 : ((CTRL_NEURMEM_CS && CTRL_NEURMEM_WE) ? (NEUR_STATE[0] ? LIF_neuron_event_out : 7'b0) : 7'b0);
     
     
     // Neuron update logic for leaky integrate-and-fire (LIF) model
@@ -166,9 +165,6 @@ module neuron_core #(
         .event_out(LIF_neuron_event_out) 
     );
     
-    
-    // Neuron update logic for phenomenological Izhikevich model
-
 
     // Neuron memory wrapper
 
@@ -215,7 +211,7 @@ module SRAM_256x128_wrapper (
      *  Simple behavioral code for simulation, to be replaced by a 256-word 128-bit SRAM macro 
      *  or Block RAM (BRAM) memory with the same format for FPGA implementations.
      */      
-        reg [127:0] SRAM[2:0];
+        reg [127:0] SRAM[255:0];
         reg [127:0] Qr;
         always @(posedge CK) begin
             Qr <= CS ? SRAM[A] : Qr;

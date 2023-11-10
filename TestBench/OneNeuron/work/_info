@@ -8,27 +8,69 @@ z2
 !i10f 100
 cModel Technology
 dC:/intelFPGA/18.1
-vizh_calcium
-Z0 !s110 1699354067
+vgenerate_neur_mem_file
+Z0 !s110 1699528055
 !i10b 1
-!s100 S^jdVMj@GD3i]`RUfI19A3
-I0f]^ZE5XhTAM?[d:J7bg82
+!s100 `V3C4B4fXk0G2@<?KNFJ=1
+I`8Z>fRHcJ4RHo=SnNXR`B1
 Z1 VDg1SIo80bB@j0V0VzS_@n1
 Z2 dC:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron
-Z3 w1699088651
-8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_calcium.v
-FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_calcium.v
-Z4 L0 26
-Z5 OV;L;10.5b;63
+w1699524376
+8C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/generate_neur_mem_file.v
+FC:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/generate_neur_mem_file.v
+L0 1
+Z3 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z6 !s108 1699354067.000000
+Z4 !s108 1699528055.000000
+!s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/generate_neur_mem_file.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/generate_neur_mem_file.v|
+!i113 1
+Z5 o-work work
+Z6 tCvgOpt 0
+vgenerate_syn_mem_file
+R0
+!i10b 1
+!s100 G6AAzj]o^EK<D2<jBGEXg1
+I>^Xnb_@>Dk3h811FkJ:WB1
+R1
+R2
+w1699524122
+8C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/generate_syn_mem_file.v
+FC:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/generate_syn_mem_file.v
+L0 1
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/generate_syn_mem_file.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/generate_syn_mem_file.v|
+!i113 1
+R5
+R6
+vizh_calcium
+R0
+!i10b 1
+!s100 S^jdVMj@GD3i]`RUfI19A3
+I0f]^ZE5XhTAM?[d:J7bg82
+R1
+R2
+Z7 w1699088651
+8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_calcium.v
+FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_calcium.v
+Z8 L0 26
+R3
+r1
+!s85 0
+31
+R4
 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_calcium.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_calcium.v|
 !i113 1
-Z7 o-work work
-Z8 tCvgOpt 0
+R5
+R6
 vizh_effective_threshold
 R0
 !i10b 1
@@ -36,20 +78,20 @@ R0
 IQ9E<S>Afa`?<O3F]VQZ:c2
 R1
 R2
-R3
+R7
 8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_effective_threshold.v
 FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_effective_threshold.v
-R4
-R5
+R8
+R3
 r1
 !s85 0
 31
-R6
+R4
 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_effective_threshold.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_effective_threshold.v|
 !i113 1
-R7
-R8
+R5
+R6
 vizh_input_accumulator
 R0
 !i10b 1
@@ -57,41 +99,41 @@ R0
 IhBPLAa>FN5XRa[@SFhB8h2
 R1
 R2
-R3
+R7
 8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_input_accumulator.v
 FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_input_accumulator.v
-R4
-R5
+R8
+R3
 r1
 !s85 0
 31
-R6
+R4
 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_input_accumulator.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_input_accumulator.v|
 !i113 1
-R7
-R8
+R5
+R6
 vizh_neuron
-Z9 !s110 1699354066
+Z9 !s110 1699528054
 !i10b 1
 !s100 <F]gX41U[YTKUE]Oon?Y:1
 IT9IS<Kf8?]Mb@SfnL]WIb1
 R1
 R2
-R3
+R7
 8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/izh_neuron.v
 FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/izh_neuron.v
-R4
-R5
+R8
+R3
 r1
 !s85 0
 31
-Z10 !s108 1699354066.000000
+Z10 !s108 1699528054.000000
 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/izh_neuron.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/izh_neuron.v|
 !i113 1
-R7
-R8
+R5
+R6
 vizh_neuron_state
 R0
 !i10b 1
@@ -99,20 +141,20 @@ R0
 IBI=`I8^SeeVDlAGJKiRQH1
 R1
 R2
-R3
+R7
 8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_neuron_state.v
 FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_neuron_state.v
 L0 31
-R5
+R3
 r1
 !s85 0
 31
-R6
+R4
 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_neuron_state.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_neuron_state.v|
 !i113 1
-R7
-R8
+R5
+R6
 vizh_stimulation_strength
 R0
 !i10b 1
@@ -120,20 +162,20 @@ R0
 IGV6OE?0LPTj^<`V`2]7k:1
 R1
 R2
-R3
+R7
 8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_stimulation_strength.v
 FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_stimulation_strength.v
-R4
-R5
+R8
+R3
 r1
 !s85 0
 31
-R10
+R4
 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_stimulation_strength.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/IZH_neuron_blocks/izh_stimulation_strength.v|
 !i113 1
-R7
-R8
+R5
+R6
 vlif_calcium
 R9
 !i10b 1
@@ -141,11 +183,11 @@ R9
 If8j0Ud6LjlhmUm^[bRCLU1
 R1
 R2
-R3
+R7
 8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/LIF_neuron_blocks/lif_calcium.v
 FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/LIF_neuron_blocks/lif_calcium.v
-R4
-R5
+R8
+R3
 r1
 !s85 0
 31
@@ -153,8 +195,8 @@ R10
 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/LIF_neuron_blocks/lif_calcium.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/LIF_neuron_blocks/lif_calcium.v|
 !i113 1
-R7
-R8
+R5
+R6
 vlif_neuron
 R9
 !i10b 1
@@ -162,11 +204,11 @@ R9
 IP8[a=[Y_llHcaHQHEjQg^0
 R1
 R2
-R3
+R7
 8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/lif_neuron.v
 FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/lif_neuron.v
-R4
-R5
+R8
+R3
 r1
 !s85 0
 31
@@ -174,20 +216,20 @@ R10
 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/lif_neuron.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/lif_neuron.v|
 !i113 1
-R7
-R8
+R5
+R6
 vlif_neuron_state
-R9
+R0
 !i10b 1
 !s100 Z_TfjW47QbZja`WU7W7nP3
 IcHWM2AD97Z3lRJ3i1g3bg3
 R1
 R2
-R3
+R7
 8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/LIF_neuron_blocks/lif_neuron_state.v
 FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/LIF_neuron_blocks/lif_neuron_state.v
-R4
-R5
+R8
+R3
 r1
 !s85 0
 31
@@ -195,20 +237,20 @@ R10
 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/LIF_neuron_blocks/lif_neuron_state.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/LIF_neuron_blocks/lif_neuron_state.v|
 !i113 1
-R7
-R8
+R5
+R6
 vneuron_core
 R9
 !i10b 1
-!s100 ^57zVhE1T=_EAc@JnDHUL0
-I^EgTL6GnmoT@j6UOVXOgT1
+!s100 iH0Z4V;iiON;l^edYND?;0
+Icc=dgK1D[<91W482MYTga3
 R1
 R2
-Z11 w1699157316
+Z11 w1699504802
 Z12 8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/neuron_core.v
 Z13 FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/neuron_core.v
-R4
-R5
+R8
+R3
 r1
 !s85 0
 31
@@ -216,20 +258,41 @@ R10
 Z14 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/neuron_core.v|
 Z15 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/neuron_core.v|
 !i113 1
+R5
+R6
+vsdsp_update
+R0
+!i10b 1
+!s100 mE@D@P6ThQUPc<?BP`4hc0
+IEZjc_3o0VkCkF1ni^Hn]o1
+R1
+R2
 R7
+8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/sdsp_update.v
+FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/sdsp_update.v
 R8
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/sdsp_update.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/sdsp_update.v|
+!i113 1
+R5
+R6
 vSRAM_256x128_wrapper
 R9
 !i10b 1
-!s100 hGRm51dmae4zaUh0CkPHc3
-IVfaX3c^o>AIzK8]501<lR2
+!s100 DmokibHboDQkD6P?f9;[;2
+IIAz3TGj?Q>KX4TShhRDkW2
 R1
 R2
 R11
 R12
 R13
-L0 283
-R5
+L0 193
+R3
 r1
 !s85 0
 31
@@ -237,30 +300,73 @@ R10
 R14
 R15
 !i113 1
-R7
-R8
+R5
+R6
 n@s@r@a@m_256x128_wrapper
-vtb_lif_neuron_state
-!s110 1699307253
+vSRAM_8192x32_wrapper
+R0
 !i10b 1
-!s100 5f=gBod=^80hF`A0l=n>k3
-I=j9jJghmBL4[_>AzFD2bE1
+!s100 O8e9d_nNbN:9U4o6mE<<23
+I13g^[O6@CkCA[hV>>aT:R0
 R1
 R2
-w1699170330
-8C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v
-FC:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v
-L0 2
-R5
+Z16 w1699495849
+Z17 8C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/synaptic_core.v
+Z18 FC:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/synaptic_core.v
+L0 136
+R3
 r1
 !s85 0
 31
-!s108 1699307253.000000
+R4
+Z19 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/synaptic_core.v|
+Z20 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/src_Test/synaptic_core.v|
+!i113 1
+R5
+R6
+n@s@r@a@m_8192x32_wrapper
+vsynaptic_core
+R0
+!i10b 1
+!s100 G_ek3RiE:gk@4Ab?oIK361
+IOl4GJlc@n;mGXmW8HYCTE3
+R1
+R2
+R16
+R17
+R18
+R8
+R3
+r1
+!s85 0
+31
+R4
+R19
+R20
+!i113 1
+R5
+R6
+vtb_lif_neuron_state
+R0
+!i10b 1
+!s100 CFfH39n@P3i_CH3SCLiXc1
+IV9k41kNaOhaMiZKajY7KC0
+R1
+R2
+w1699528050
+8C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v
+FC:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v
+L0 2
+R3
+r1
+!s85 0
+31
+R4
 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_lif_neuron_state.v|
 !i113 1
-R7
-R8
+R5
+R6
 vtb_neuron_core
 !s110 1699157465
 !i10b 1
@@ -272,7 +378,7 @@ w1699157460
 8C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_neuron_core.v
 FC:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_neuron_core.v
 L0 3
-R5
+R3
 r1
 !s85 0
 31
@@ -280,8 +386,8 @@ r1
 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_neuron_core.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/tb_neuron_core.v|
 !i113 1
-R7
-R8
+R5
+R6
 vtestt
 R0
 !i10b 1
@@ -293,13 +399,13 @@ w1699354061
 8C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/testt.v
 FC:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/testt.v
 L0 1
-R5
+R3
 r1
 !s85 0
 31
-R6
+R4
 !s107 C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/testt.v|
 !s90 -reportprogress|300|-work|work|-stats=none|C:/Users/mosta/Documents/GitHub/ODIN_Test/TestBench/OneNeuron/testt.v|
 !i113 1
-R7
-R8
+R5
+R6

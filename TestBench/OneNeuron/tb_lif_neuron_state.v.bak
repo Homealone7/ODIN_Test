@@ -1,111 +1,190 @@
 `timescale 1ps/1ps
 module tb_lif_neuron_state;
 
-    reg [6:0] param_leak_str; // corresponds to leak_str in the golden model
-    reg       param_leak_en;  // corresponds to leak_en in the golden model
-    reg [7:0] param_thr;      // corresponds to thr in the golden model
-    reg [7:0] state_core;
-    reg       event_leak;
-    reg       event_inh;
-    reg       event_exc;
-    reg [2:0] syn_weight;     // a 3-bit synaptic weight for simplicity
-    wire [7:0] state_core_next;
-    wire [6:0] event_out;
+    parameter N = 256;
+    parameter M = 8;
+    integer i, k, l, m;
+    reg CLK;
 
-    integer file_descriptor;
+    reg RSTN_syncn, SPI_GATE_ACTIVITY_sync, SPI_UPDATE_UNMAPPED_SYN, SPI_PROPAGATE_UNMAPPED_SYN;
+    reg [  N-1:0] SPI_SYN_SIGN;
+    reg [    7:0] CTRL_PRE_EN;
+    reg           CTRL_BIST_REF;
+    reg           CTRL_SYNARRAY_WE;
+    reg [   12:0] CTRL_SYNARRAY_ADDR;
+    reg           CTRL_SYNARRAY_CS;
+    reg [2*M-1:0] CTRL_PROG_DATA;
+    reg [2*M-1:0] CTRL_SPI_ADDR;
+    wire [  N-1:0] NEUR_V_UP;
+    wire [  N-1:0] NEUR_V_DOWN;
+    wire [   31:0] SYNARRAY_RDATA;
+    wire [   31:0] SYNARRAY_WDATA;
+    wire           SYN_SIGN;
 
-    lif_neuron lif_neuron_0 ( 
-        .param_leak_str(         NEUR_STATE[0] ? NEUR_STATE[  7:  1] : 7'b0),
-        .param_leak_en(          NEUR_STATE[0] ? NEUR_STATE[      8] : 1'b0),
-        .param_thr(              NEUR_STATE[0] ? NEUR_STATE[ 16:  9] : 8'b0),
-        .param_ca_en(            NEUR_STATE[0] ? NEUR_STATE[     17] : 1'b0),
-        .param_thetamem(         NEUR_STATE[0] ? NEUR_STATE[ 25: 18] : 8'b0),
-        .param_ca_theta1(        NEUR_STATE[0] ? NEUR_STATE[ 28: 26] : 3'b0),
-        .param_ca_theta2(        NEUR_STATE[0] ? NEUR_STATE[ 31: 29] : 3'b0),
-        .param_ca_theta3(        NEUR_STATE[0] ? NEUR_STATE[ 34: 32] : 3'b0),
-        .param_caleak(           NEUR_STATE[0] ? NEUR_STATE[ 39: 35] : 5'b0),
+
+    reg                 CTRL_NEUR_EVENT;
+    reg                 CTRL_NEUR_TREF;
+    reg [          4:0] CTRL_NEUR_VIRTS;
+    reg                 CTRL_NEURMEM_CS;
+    reg                 CTRL_NEURMEM_WE;
+    reg [        M-1:0] CTRL_NEURMEM_ADDR;
+    reg                 CTRL_NEUR_BURST_END;
+    wire [         14:0] NEUR_STATE_MONITOR;
+    wire [        127:0] NEUR_STATE;
+    wire [          6:0] NEUR_EVENT_OUT;
+
+    reg [1:0]counter;
+synaptic_core #(
+        .N(N),
+        .M(M)
+    ) synaptic_core_0 (
+    
+        // Global inputs ------------------------------------------
+        .RSTN_syncn(RSTN_syncn),
+        .CLK(CLK),
+
+        // Inputs from SPI configuration registers ----------------
+        .SPI_GATE_ACTIVITY_sync(SPI_GATE_ACTIVITY_sync),
+        .SPI_SYN_SIGN(SPI_SYN_SIGN),
+        .SPI_UPDATE_UNMAPPED_SYN(SPI_UPDATE_UNMAPPED_SYN),
         
-        .state_core(             NEUR_STATE[0] ? NEUR_STATE[ 77: 70] : 8'b0),
-        .state_core_next(        LIF_neuron_next_NEUR_STATE[  7:  0]       ),
-        .state_calcium(          NEUR_STATE[0] ? NEUR_STATE[ 80: 78] : 3'b0),
-        .state_calcium_next(     LIF_neuron_next_NEUR_STATE[ 10:  8]       ),
-        .state_caleak_cnt(       NEUR_STATE[0] ? NEUR_STATE[ 85: 81] : 5'b0),
-        .state_caleak_cnt_next(  LIF_neuron_next_NEUR_STATE[ 15: 11]       ),
+        // Inputs from controller ---------------------------------
+        .CTRL_PRE_EN(CTRL_PRE_EN),
+        .CTRL_BIST_REF(CTRL_BIST_REF),
+        .CTRL_SYNARRAY_WE(CTRL_SYNARRAY_WE),
+        .CTRL_SYNARRAY_ADDR(CTRL_SYNARRAY_ADDR),
+        .CTRL_SYNARRAY_CS(CTRL_SYNARRAY_CS),
+        .CTRL_PROG_DATA(CTRL_PROG_DATA),
+        .CTRL_SPI_ADDR(CTRL_SPI_ADDR),
         
-        .syn_weight(syn_weight),
-        .syn_sign(syn_sign),
-        .syn_event(syn_event),
-        .time_ref(time_ref),
+        // Inputs from neurons ------------------------------------
+        .NEUR_V_UP(NEUR_V_UP),
+        .NEUR_V_DOWN(NEUR_V_DOWN),
         
-        .v_up_next(LIF_neuron_v_up_next),
-        .v_down_next(LIF_neuron_v_down_next),
-        .event_out(LIF_neuron_event_out) 
+        // Outputs ------------------------------------------------
+        .SYNARRAY_RDATA(SYNARRAY_RDATA),
+        .SYNARRAY_WDATA(SYNARRAY_WDATA),
+        .SYN_SIGN(SYN_SIGN)
+	);
+
+neuron_core #(
+        .N(N),
+        .M(M)
+    ) neuron_core_0 (
+    
+        // Global inputs ------------------------------------------
+        .RSTN_syncn(RSTN_syncn),
+        .CLK(CLK),
+        
+        // Inputs from SPI configuration registers ----------------
+        .SPI_GATE_ACTIVITY_sync(SPI_GATE_ACTIVITY_sync),
+        .SPI_PROPAGATE_UNMAPPED_SYN(SPI_PROPAGATE_UNMAPPED_SYN),
+		
+        // Synaptic inputs ----------------------------------------
+        .SYNARRAY_RDATA(SYNARRAY_RDATA),
+        .SYN_SIGN(SYN_SIGN),
+        
+        // Inputs from controller ---------------------------------
+        .CTRL_NEUR_EVENT(CTRL_NEUR_EVENT),
+        .CTRL_NEUR_TREF(CTRL_NEUR_TREF),
+        .CTRL_NEUR_VIRTS(CTRL_NEUR_VIRTS),
+        .CTRL_NEURMEM_WE(CTRL_NEURMEM_WE),
+        .CTRL_NEURMEM_ADDR(CTRL_NEURMEM_ADDR),
+        .CTRL_NEURMEM_CS(CTRL_NEURMEM_CS),
+        .CTRL_PROG_DATA(CTRL_PROG_DATA),
+        .CTRL_SPI_ADDR(CTRL_SPI_ADDR),
+        
+        // Inputs from scheduler ----------------------------------
+        .CTRL_NEUR_BURST_END(CTRL_NEUR_BURST_END), 
+        
+        // Outputs ------------------------------------------------
+        .NEUR_STATE(NEUR_STATE),
+        .NEUR_EVENT_OUT(NEUR_EVENT_OUT),
+        .NEUR_V_UP(NEUR_V_UP),
+        .NEUR_V_DOWN(NEUR_V_DOWN),
+        .NEUR_STATE_MONITOR(NEUR_STATE_MONITOR)
     );
 
-    lif_neuron_state uut (
-        .param_leak_str(param_leak_str),
-        .param_leak_en(param_leak_en),
-        .param_thr(param_thr),
-        .state_core(state_core),
-        .event_leak(event_leak),
-        .event_inh(event_inh),
-        .event_exc(event_exc),
-        .syn_weight(syn_weight),
-        .state_core_next(state_core_next),
-        .event_out(event_out)
-    );
 
-    lif_calcium ca(
-        .param_ca_en(1'b0)
-    )
-
-    initial begin
-        // Open the file for writing
-        file_descriptor = $fopen("neuron_output.csv", "w");
-        if (file_descriptor == 0) $fatal("Error opening file for writing.");
-
-        // Write the CSV header
-        $fwrite(file_descriptor, "Time,State Core\n");
-
-        // Initialize parameters to match the golden model
-        param_leak_str = 7'd5;    // leakage strength set to 5
-        param_leak_en  = 1'b1;    // Enable leakage
-        param_thr      = 8'd100;  // Firing threshold set to 100
-        state_core     = 8'd0;    // Initial membrane potential
-
-        // Start the test
-        event_leak = 0;
-        event_inh = 0;
-        event_exc = 0;
-        syn_weight = 3'd4;  // Set an arbitrary synaptic weight for testing
-        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
-        #10
-        event_exc = 1;  // Trigger excitatory event
-        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
-        #10
-        event_exc = 0;
-        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
-
-        #10
-        event_exc = 1;  // Trigger inhibitory event
-        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
-        #10
-        event_inh = 1;
-        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
-
-        #10
-        event_leak = 1;  // Trigger leakage event
-        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
-        #10
-        event_leak = 0;
-        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
-
-        #10
-        $fwrite(file_descriptor, "%0d,%0d\n", $time, state_core_next);
-
-        #10
-        $fclose(file_descriptor);  // Close the file
-        $stop;  // End the simulation
+    always begin
+        #5 CLK = ~CLK;
     end
+
+initial begin
+    CLK = 0;
+    RSTN_syncn = 1;
+
+    CTRL_SYNARRAY_WE = 1; 
+    CTRL_SYNARRAY_CS = 1; 
+    CTRL_NEURMEM_WE = 1;
+    CTRL_NEURMEM_CS = 1;
+    CTRL_SPI_ADDR = 16'b0;
+    CTRL_NEURMEM_ADDR = 8'b0;
+
+    #10 RSTN_syncn = 0;
+
+    SPI_GATE_ACTIVITY_sync = 1'b1;
+    SPI_SYN_SIGN = {256{1'b0}};
+    SPI_UPDATE_UNMAPPED_SYN = 1'b0;
+    CTRL_PRE_EN = 8'b0;
+    CTRL_BIST_REF = 1'b0;
+
+    
+    SPI_PROPAGATE_UNMAPPED_SYN = 1'b1;
+    CTRL_NEUR_VIRTS = 5'b0;
+    CTRL_NEUR_TREF = 1'b0;
+
+    // Initialize SRAM
+    for (i = 0; i < 8192; i=i+1) begin
+        
+        CTRL_SYNARRAY_ADDR = i;
+        for (k = 0; k < 4; k = k + 1) begin
+        CTRL_SPI_ADDR[14:13] = k; 
+        CTRL_PROG_DATA = 16'b 0000_0000_0001_0001;
+        #10;
+        end
+         #10;
+    end
+        CTRL_SYNARRAY_WE = 0; 
+     for (l = 0; l < 256; l=l+1) begin
+        
+        CTRL_NEURMEM_ADDR = l;
+        for (m = 0; m < 16; m = m + 1) begin
+        
+            case(m)
+                0: CTRL_PROG_DATA = 16'b 0000_0000_0000_0111; 
+                1: CTRL_PROG_DATA = 16'b 0000_0000_0001_1001; 
+                2: CTRL_PROG_DATA = 16'b 0000_0000_0000_0000;
+                3: CTRL_PROG_DATA = 16'b 0000_0000_0000_0000; 
+                4: CTRL_PROG_DATA = 16'b 0000_0000_0000_0000;
+                5: CTRL_PROG_DATA = 16'b 0000_0000_0000_0000;
+                6: CTRL_PROG_DATA = 16'b 0000_0000_0000_0000;
+                7: CTRL_PROG_DATA = 16'b 0000_0000_0000_0000;
+                8: CTRL_PROG_DATA = 16'b 0000_0000_0000_0000; 
+                9: CTRL_PROG_DATA = 16'b 0000_0000_0000_0001; 
+                10: CTRL_PROG_DATA = 16'b 0000_0000_1011_1100;
+                11: CTRL_PROG_DATA = 16'b 0000_0000_1011_1100;
+                12: CTRL_PROG_DATA = 16'b 0000_0000_1011_1100;
+                13: CTRL_PROG_DATA = 16'b 0000_0000_1011_1100;
+                14: CTRL_PROG_DATA = 16'b 0000_0000_1011_1100;
+                15: CTRL_PROG_DATA = 16'b 0000_0000_0011_1100; 
+            endcase
+            CTRL_SPI_ADDR[11:8] = m;
+            #10;
+        end
+        #10;
+    end
+    CTRL_NEURMEM_WE = 0;
+    SPI_GATE_ACTIVITY_sync = 1'b0;
+    #10;
+    CTRL_SYNARRAY_ADDR = 13'b 0000_0010_0000_1;
+    CTRL_NEURMEM_ADDR =  8'b 0000_1000;
+    CTRL_NEUR_EVENT = 1'b1;
+    #10;
+    CTRL_NEURMEM_WE = 1;
+    CTRL_SYNARRAY_WE = 1;
+    #10;
+    $stop;
+end
 
 endmodule
